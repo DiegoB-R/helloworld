@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useWeatherStore = defineStore('weather', () => {
-    //Estados 
     const ciudad = ref('Cancun')
     const latitud = ref(20.97)
     const longitud = ref(-86.93)
@@ -10,9 +9,11 @@ export const useWeatherStore = defineStore('weather', () => {
     const viento = ref(null)
     const cargando = ref(false)
     const error = ref('')
+    const codigoClima = ref(0)
 
-    //Variables computadas 
+    // si temp es null no hay datos todavia
     const tieneClima = computed(() => temperatura.value !== null)
+
     const descripcionClima = computed(() => {
         if (!tieneClima.value) return 'Sin datos'
         if (temperatura.value > 35) return 'Calor extremo'
@@ -21,30 +22,26 @@ export const useWeatherStore = defineStore('weather', () => {
         return 'Fresco'
     })
 
-    //Acciones
     function setCiudad(nombre, lat, lon) {
         ciudad.value = nombre
         latitud.value = lat
         longitud.value = lon
     }
 
-    function setClima(temp, vientKmh) {
+    function setClima(temp, vientoKmh) {
         temperatura.value = temp
-        viento.value = vientKmh
+        viento.value = vientoKmh
     }
 
     function limpiarError() {
         error.value = ''
     }
 
-    //Exponer todo lo que los componentes puedan utilizar
     return {
         ciudad, latitud, longitud,
-        temperatura, viento, cargando, error,
+        temperatura, viento,
+        cargando, error, codigoClima,
         tieneClima, descripcionClima,
         setCiudad, setClima, limpiarError
     }
-
-    
-
 })

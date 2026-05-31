@@ -3,38 +3,37 @@ import { onMounted } from 'vue'
 import { useWeatherStore } from '@/stores/weatherStore'
 import { obtenerClima, interpretaCodigo } from '../services/weatherService'
 
-const store = useWeatherStore();
+const store = useWeatherStore()
+
 async function cargarClima() {
-    store.cargando = true;
+    store.cargando = true
     store.limpiarError()
     try {
         const datos = await obtenerClima(store.latitud, store.longitud)
         store.setClima(datos.temperatura, datos.viento)
         store.codigoClima = datos.codigoClima
-    } catch {
-        store.error = "No se puede conectar con la API de clima"
+    } catch (e) {
+        store.error = 'No se puede conectar con la API de clima'
     } finally {
         store.cargando = false
     }
-
 }
 
 onMounted(cargarClima)
 
+defineExpose({ cargarClima })
 </script>
-
 
 <template>
     <div class="card">
         <header>
-            <h2>
-                {{ store.ciudad }}
-            </h2>
-            <spam class="badge">
+            <h2>{{ store.ciudad }}</h2>
+            <span class="badge">
                 {{ store.descripcionClima }}
                 {{ interpretaCodigo(store.codigoClima).emoji }}
-            </spam>
+            </span>
         </header>
+
         <div v-if="store.cargando" class="estado">
             Obteniendo clima...
         </div>
@@ -42,15 +41,9 @@ onMounted(cargarClima)
             {{ store.error }}
         </div>
         <div v-else class="datos">
-            <p class="temp">
-                {{ store.temperatura }}
-
-            </p>
-            <p class="viento">
-                {{ store.viento }}
-            </p>
+            <p class="temp">{{ store.temperatura }}°C</p>
             <button @click="cargarClima" :disabled="store.cargando">
-                {{ store.cargando ? "Actualizando.." : "Actualizar.." }}
+                {{ store.cargando ? 'Actualizando...' : 'Actualizar' }}
             </button>
         </div>
     </div>
@@ -62,8 +55,8 @@ onMounted(cargarClima)
     border-radius: 16px;
     padding: 28px;
     max-width: 320px;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-     background-color: #d2dde8;
+    font-family: "Gill Sans", Calibri, sans-serif;
+    background-color: #d2dde8;
 }
 
 header {
@@ -75,6 +68,7 @@ header {
 h2 {
     color: #1e3a5f;
     margin: 0;
+    font-size: 16px;
 }
 
 .badge {
