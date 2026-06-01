@@ -11,7 +11,6 @@ export const useWeatherStore = defineStore('weather', () => {
     const error = ref('')
     const codigoClima = ref(0)
 
-    // si temp es null no hay datos todavia
     const tieneClima = computed(() => temperatura.value !== null)
 
     const descripcionClima = computed(() => {

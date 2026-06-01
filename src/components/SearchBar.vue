@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const ciudadInput = ref('')
 const emit = defineEmits(['buscar'])
 
-// TODO: mostrar mensaje si el input esta vacio
+
 const obtenerCiudad = () => {
     const ciudad = ciudadInput.value.trim()
     if (!ciudad) return
