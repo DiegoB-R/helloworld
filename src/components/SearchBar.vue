@@ -33,14 +33,14 @@ const obtenerCiudad = () => {
 
 input {
     padding: 10px;
-    border: 2px solid #2563EB;
+    border: 2px solid #032e89;
     border-radius: 8px;
     font-size: 16px;
     width: 260px;
 }
 
 button {
-    background: #4b72c7;
+    background: #0c2f79;
     color: white;
     border: none;
     padding: 10px 18px;

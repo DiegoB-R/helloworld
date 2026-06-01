@@ -46,13 +46,13 @@ async function onBuscar(ciudad) {
 }
 
 h1 {
-    color: #1e3a5f;
+    color: #979da5;
     font-size: 2rem;
     margin-bottom: 8px;
 }
 
 .subtitle {
-    color: #66748B;
+    color: #2d466f;
     margin-bottom: 24px;
 }
 </style>
