@@ -45,4 +45,3 @@ export function interpretaCodigo(code) {
     return { emoji: '🌪', desc: 'Tormenta' }
 }
 
- 

@@ -15,11 +15,7 @@ const obtenerCiudad = () => {
 
 <template>
     <div class="box">
-        <input
-            v-model="ciudadInput"
-            @keyup.enter="obtenerCiudad"
-            placeholder="Ej: Cancún, Madrid..."
-        />
+        <input v-model="ciudadInput" @keyup.enter="obtenerCiudad" placeholder="Ej: Cancún, Madrid..." />
         <button @click="obtenerCiudad">Buscar</button>
     </div>
 </template>

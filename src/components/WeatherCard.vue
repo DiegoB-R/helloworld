@@ -4,7 +4,7 @@ import { useWeatherStore } from '@/stores/weatherStore'
 import { obtenerClima, interpretaCodigo } from '../services/weatherService'
 
 const store = useWeatherStore()
- 
+
 async function cargarClima() {
     store.cargando = true
     store.limpiarError()

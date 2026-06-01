@@ -1,25 +1,61 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed,reactive } from 'vue'
+import {interpretaCodigo} from '@/services/weatherService'
 
 export const useWeatherStore = defineStore('weather', () => {
     const ciudad = ref('Cancun')
     const latitud = ref(20.97)
     const longitud = ref(-86.93)
-    const temperatura = ref(null)
-    const viento = ref(null)
+   /* const temperatura = ref(null)
+    const viento = ref(null)*/
     const cargando = ref(false)
     const error = ref('')
     const codigoClima = ref(0)
 
-    const tieneClima = computed(() => temperatura.value !== null)
+/*Datos del clima agrupados con reactive*/
+const clima = reactive({
+    temperatura: null,
+    viento: null,
+    codigoClima: 0,
+    ultimaActualizacion: null
+})
+
+
+/*Historial de ciudades consultadas*/
+const historial = ref({})
+
+
+
+    const tieneClima = computed(() => clima.temperatura !== null)
 
     const descripcionClima = computed(() => {
         if (!tieneClima.value) return 'Sin datos'
-        if (temperatura.value > 35) return 'Calor extremo'
-        if (temperatura.value > 25) return 'Calido'
-        if (temperatura.value > 1) return 'Templado'
+        if (clima.temperatura > 35) return 'Calor extremo'
+        if (clima.temperatura > 25) return 'Calido'
+        if (clima.temperatura > 1) return 'Templado'
         return 'Fresco'
     })
+
+/* Regresa el icono segun el codigo de clima OpenMeteo */
+const iconoClima = computed (()=> {
+    tieneClima.value?interpretaCodigo(clima.codigoClima).emoji:'💩'
+})
+
+
+/*  FC: Tiempo desde la ultima actualizacion  */
+const timepoactualizacion = computed(() => {
+    if (!clima.ultimaActualizacion) return 'Nunca'
+
+    const minutos = Math.floor((Date.now()- clima.ultimaActualizacion)/60000)
+    if (minutos <1) return 'Hace menos de un minuto'
+    if (minutos <60) return `Hace ${minutos} min.`
+    return `Hace ${Math.floor(minutos/60)} horas`
+
+
+
+})
+
+
 
     function setCiudad(nombre, lat, lon) {
         ciudad.value = nombre
@@ -27,9 +63,11 @@ export const useWeatherStore = defineStore('weather', () => {
         longitud.value = lon
     }
 
-    function setClima(temp, vientoKmh) {
-        temperatura.value = temp
-        viento.value = vientoKmh
+    function setClima(temp, vientoKmh, codigo) {
+        clima.temperatura = temp
+        clima.viento = vientoKmh
+        clima.codigoClima = cod
+
     }
 
     function limpiarError() {
@@ -40,7 +78,7 @@ export const useWeatherStore = defineStore('weather', () => {
         ciudad, latitud, longitud,
         temperatura, viento,
         cargando, error, codigoClima,
-        tieneClima, descripcionClima,
-        setCiudad, setClima, limpiarError
+        tieneClima, descripcionClima, iconoClima, timepoactualizacion,
+        setCiudad, setClima, limpiarError,
     }
 })
