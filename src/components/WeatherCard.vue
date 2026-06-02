@@ -5,7 +5,7 @@ import { obtenerClima } from '../services/weatherService'
 
 const store = useWeatherStore()
 
-let tiemr = null
+let timer = null
 
 async function cargarClima() {
     store.cargando = true
@@ -24,7 +24,7 @@ async function cargarClima() {
      Solo se ejecutara cuando latitud y longitud cambian
 */
 
-wactch(
+watch(
     [() => store.latitud, () => store.longitud],
     () => cargarClima()
 
