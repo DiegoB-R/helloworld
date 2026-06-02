@@ -52,10 +52,7 @@ const timepoactualizacion = computed(() => {
     return `Hace ${Math.floor(minutos/60)} horas`
 
 
-
 })
-
-
 
     function setCiudad(nombre, lat, lon) {
         ciudad.value = nombre
@@ -66,7 +63,7 @@ const timepoactualizacion = computed(() => {
     function setClima(temp, vientoKmh, codigo) {
         clima.temperatura = temp
         clima.viento = vientoKmh
-        clima.codigoClima = cod
+        clima.codigoClima = codigo
 
     }
 
@@ -76,8 +73,7 @@ const timepoactualizacion = computed(() => {
 
     return {
         ciudad, latitud, longitud,
-        temperatura, viento,
-        cargando, error, codigoClima,
+        cargando, error, codigoClima,clima, historial,
         tieneClima, descripcionClima, iconoClima, timepoactualizacion,
         setCiudad, setClima, limpiarError,
     }
