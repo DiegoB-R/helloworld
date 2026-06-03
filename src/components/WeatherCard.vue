@@ -1,7 +1,7 @@
 <script setup>
 import { watch, onMounted, onUnmounted } from 'vue'
 import { useWeatherStore } from '@/stores/weatherStore'
-import { obtenerClima } from '../services/weatherService'
+import { obtenerClima, interpretaCodigo } from '../services/weatherService'
 
 const store = useWeatherStore()
 
@@ -45,21 +45,33 @@ onUnmounted(() => {
 <template>
     <div class="card">
         <header>
-            <h2>{{ store.ciudad }}</h2>
-            <span class="badge">
-                {{ store.descripcionClima }}
-                {{ interpretaCodigo(store.codigoClima).emoji }}
+            <div>
+                <h2>{{ store.ciudad }}</h2>
+                <span class="badge">
+                    {{ store.descripcionClima }}
+                </span>
+
+            </div>
+            <span class="actualizacion">
+                Ultima actualización: {{ store.tiempoActualizacion }}
             </span>
         </header>
-
         <div v-if="store.cargando" class="estado">
-            Obteniendo clima...
+            <span class="spinner">⌛</span> Obteniendo clima...
         </div>
         <div v-else-if="store.error" class="estado error">
-            {{ store.error }}
+            <span class="spinner">⚠️</span> {{ store.error }}
         </div>
         <div v-else class="datos">
-            <p class="temp">{{ store.temperatura }}°C</p>
+            <p class="icono">{{ store.iconoClima }}</p>
+            <p class="temp">{{ store.clima.temperatura }}°C</p>
+            <p class="viento">Viento: {{ store.clima.viento }} km/h</p>
+            <!-- Historial de ciudades  -->
+            <div class="historial" v-if='store.historial.length > 0'>
+                <p class="historial-ciudad">Recientes</p>
+                <span class="chip" v-for="ciudad in store.historial" :key='ciudad'>{{ciudad}}</span>
+
+            </div>
             <button @click="cargarClima" :disabled="store.cargando">
                 {{ store.cargando ? 'Actualizando...' : 'Actualizar' }}
             </button>

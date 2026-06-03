@@ -36,6 +36,7 @@ export async function obtenerClima(lat, lon) {
  */
 
 export function interpretaCodigo(code) {
+    console.log('Interpretando codigo', code)
     if (code === 0) return { emoji: '☼', desc: 'Despejado' }
     if (code <= 3) return { emoji: '🌥', desc: 'Parcialmente nublado' }
     if (code <= 48) return { emoji: '🌫', desc: 'Niebla' }

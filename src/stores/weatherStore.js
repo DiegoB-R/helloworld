@@ -22,7 +22,7 @@ const clima = reactive({
 
 
 /*Historial de ciudades consultadas*/
-const historial = ref({})
+const historial = ref([])
 
 
 
@@ -38,12 +38,12 @@ const historial = ref({})
 
 /* Regresa el icono segun el codigo de clima OpenMeteo */
 const iconoClima = computed (()=> {
-    tieneClima.value?interpretaCodigo(clima.codigoClima).emoji:'💩'
+   return tieneClima.value?interpretaCodigo(clima.codigoClima).emoji:'💩'
 })
 
 
 /*  FC: Tiempo desde la ultima actualizacion  */
-const timepoactualizacion = computed(() => {
+const tiempoActualizacion = computed(() => {
     if (!clima.ultimaActualizacion) return 'Nunca'
 
     const minutos = Math.floor((Date.now()- clima.ultimaActualizacion)/60000)
@@ -58,12 +58,17 @@ const timepoactualizacion = computed(() => {
         ciudad.value = nombre
         latitud.value = lat
         longitud.value = lon
+        //Guardar la ciudad en el historial
+        if (!historial.value.includes(nombre)){
+            historial.value=[nombre,...historial.value.slice(0,5)]
+        }
     }
 
     function setClima(temp, vientoKmh, codigo) {
         clima.temperatura = temp
         clima.viento = vientoKmh
         clima.codigoClima = codigo
+        clima.ultimaActualizacion = Date.now()
 
     }
 
@@ -74,7 +79,7 @@ const timepoactualizacion = computed(() => {
     return {
         ciudad, latitud, longitud,
         cargando, error, codigoClima,clima, historial,
-        tieneClima, descripcionClima, iconoClima, timepoactualizacion,
+        tieneClima, descripcionClima, iconoClima, tiempoActualizacion,
         setCiudad, setClima, limpiarError,
     }
 })
