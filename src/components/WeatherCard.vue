@@ -2,6 +2,7 @@
 import { watch, onMounted, onUnmounted } from 'vue'
 import { useWeatherStore } from '@/stores/weatherStore'
 import { obtenerClima, interpretaCodigo } from '../services/weatherService'
+import  HistorialCiudades from './HistorialCiudades.vue'
 
 const store = useWeatherStore()
 
@@ -67,11 +68,11 @@ onUnmounted(() => {
             <p class="temp">{{ store.clima.temperatura }}°C</p>
             <p class="viento">Viento: {{ store.clima.viento }} km/h</p>
             <!-- Historial de ciudades  -->
-            <div class="historial" v-if='store.historial.length > 0'>
+            <HistorialCiudades v-show="store.historial.length>0">
                 <p class="historial-ciudad">Recientes</p>
                 <span class="chip" v-for="ciudad in store.historial" :key='ciudad'>{{ciudad}}</span>
 
-            </div>
+            </HistorialCiudades>
             <button @click="cargarClima" :disabled="store.cargando">
                 {{ store.cargando ? 'Actualizando...' : 'Actualizar' }}
             </button>
@@ -181,4 +182,5 @@ button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
 </style>

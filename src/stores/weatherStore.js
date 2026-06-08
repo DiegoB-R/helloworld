@@ -59,9 +59,15 @@ const tiempoActualizacion = computed(() => {
         latitud.value = lat
         longitud.value = lon
         //Guardar la ciudad en el historial
-        if (!historial.value.includes(nombre)){
-            historial.value=[nombre,...historial.value.slice(0,5)]
-        }
+           const nuevaCiudad = {nombre, lat ,lon}
+    historial.value = [
+        ...historial.value.filter((ciudadGuardada)=> ciudadGuardada.nombre !== nombre),nuevaCiudad,].slice(-6)
+    }
+
+ 
+    
+    function limpiarHistorial(){
+        historial.value = []
     }
 
     function setClima(temp, vientoKmh, codigo) {
@@ -80,6 +86,6 @@ const tiempoActualizacion = computed(() => {
         ciudad, latitud, longitud,
         cargando, error, codigoClima,clima, historial,
         tieneClima, descripcionClima, iconoClima, tiempoActualizacion,
-        setCiudad, setClima, limpiarError,
+        setCiudad, setClima, limpiarError, limpiarHistorial
     }
 })
